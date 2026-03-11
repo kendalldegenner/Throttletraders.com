@@ -1,230 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Throttle Traders | The Flip Blueprint</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
-    <script src="https://unpkg.com/lucide@latest"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Throttle Traders | The Flip Blueprint</title>
 
-    <style>
-        @keyframes marquee {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-100%); }
-        }
-        .animate-marquee {
-            display: inline-block;
-            white-space: nowrap;
-            animation: marquee 20s linear infinite;
-        }
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-        .animate-float {
-            animation: float 4s ease-in-out infinite;
-        }
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 15px rgba(57, 255, 20, 0.4); }
-            50% { box-shadow: 0 0 30px rgba(57, 255, 20, 0.8); }
-        }
-        .animate-pulse-glow {
-            animation: pulse-glow 2s infinite;
-        }
-        .bg-grid-pattern {
-            background-image: linear-gradient(to right, #1f2937 1px, transparent 1px),
-                              linear-gradient(to bottom, #1f2937 1px, transparent 1px);
-            background-size: 40px 40px;
-        }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0a0a0a; }
-        ::-webkit-scrollbar-thumb { background: #39ff14; border-radius: 4px; }
-    </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    @keyframes marquee {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-100%); }
+    }
+    .animate-marquee {
+      display: inline-block;
+      white-space: nowrap;
+      animation: marquee 20s linear infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+    .animate-float {
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 15px rgba(57, 255, 20, 0.4); }
+      50% { box-shadow: 0 0 30px rgba(57, 255, 20, 0.8); }
+    }
+    .animate-pulse-glow {
+      animation: pulse-glow 2s infinite;
+    }
+    .bg-grid-pattern {
+      background-image: linear-gradient(to right, #1f2937 1px, transparent 1px),
+                        linear-gradient(to bottom, #1f2937 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0a0a0a; }
+    ::-webkit-scrollbar-thumb { background: #39ff14; border-radius: 4px; }
+  </style>
 </head>
 <body>
-    <div id="root"></div>
+  <div id="root"></div>
 
-    <script type="text/babel">
-        // Destructure hooks from React
-        const { useState, useEffect } = React;
+  <script type="text/babel">
+    const { useState, useEffect } = React;
 
-        // Simple wrapper for Lucide icons in CDN mode
-        const Icon = ({ name, ...props }) => {
-            const [iconHtml, setIconHtml] = useState('');
-            useEffect(() => {
-                if (window.lucide) {
-                    const icon = window.lucide.icons[name];
-                    if (icon) {
-                        // Create temporary SVG
-                        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-                        Object.entries({
-                            ...icon.attrs,
-                            ...props,
-                            class: `lucide lucide-${name.toLowerCase()} ${props.className || ''}`
-                        }).forEach(([k, v]) => svg.setAttribute(k, v));
-                        
-                        icon.contents.forEach(child => {
-                            const element = document.createElementNS("http://www.w3.org/2000/svg", child.tag);
-                            Object.entries(child.attrs).forEach(([k, v]) => element.setAttribute(k, v));
-                            svg.appendChild(element);
-                        });
-                        setIconHtml(svg.outerHTML);
-                    }
-                }
-            }, [name]);
-            return <span dangerouslySetInnerHTML={{ __html: iconHtml }} />;
+    const TickerTape = () => {
+      const flips = [
+        "⚡ JUST FLIPPED: '19 YZ250F 🟢 +$1,200 PROFIT",
+        "⚡ JUST FLIPPED: '21 SEADOO SPARK 🟢 +$2,450 PROFIT",
+        "⚡ JUST FLIPPED: '15 HONDA TRX450R 🟢 +$800 PROFIT",
+        "⚡ JUST FLIPPED: '20 KTM 350 EXC-F 🟢 +$1,750 PROFIT",
+        "⚡ JUST FLIPPED: '18 POLARIS RZR 🟢 +$3,100 PROFIT",
+      ];
+
+      return (
+        <div className="w-full bg-lime-500 text-black font-black text-sm md:text-base uppercase tracking-widest py-3 overflow-hidden border-y border-lime-400 relative z-20">
+          <div className="flex whitespace-nowrap">
+            <div className="animate-marquee flex items-center">
+              {flips.map((flip, i) => (
+                <span key={i} className="mx-8">{flip}</span>
+              ))}
+            </div>
+            <div className="animate-marquee flex items-center" aria-hidden="true">
+              {flips.map((flip, i) => (
+                <span key={i} className="mx-8">{flip}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    const SocialProofPopup = () => {
+      const [visible, setVisible] = useState(false);
+      const [data, setData] = useState({ name: "", action: "", time: "" });
+
+      const notifications = [
+        { name: "Jake T.", action: "just bought The Blueprint", time: "2 mins ago" },
+        { name: "Mike R.", action: "joined the VIP Garage", time: "5 mins ago" },
+        { name: "Sarah L.", action: "flipped a JetSki for $1.5k", time: "12 mins ago" },
+        { name: "Tyler B.", action: "just bought The Blueprint", time: "Just now" },
+      ];
+
+      useEffect(() => {
+        const triggerPopup = () => {
+          const randomNotif = notifications[Math.floor(Math.random() * notifications.length)];
+          setData(randomNotif);
+          setVisible(true);
+          setTimeout(() => setVisible(false), 4000);
         };
-
-        const TickerTape = () => {
-            const flips = [
-                "JUST FLIPPED: '19 YZ250F 🟢 +$1,200 PROFIT",
-                "JUST FLIPPED: '21 SEADOO SPARK 🟢 +$2,450 PROFIT",
-                "JUST FLIPPED: '15 HONDA TRX450R 🟢 +$800 PROFIT",
-                "JUST FLIPPED: '20 KTM 350 EXC-F 🟢 +$1,750 PROFIT",
-                "JUST FLIPPED: '18 POLARIS RZR 🟢 +$3,100 PROFIT",
-            ];
-
-            return (
-                <div className="w-full bg-lime-500 text-black font-black text-sm md:text-base uppercase tracking-widest py-3 overflow-hidden border-y border-lime-400 relative z-20">
-                    <div className="flex whitespace-nowrap">
-                        <div className="animate-marquee flex items-center">
-                            {flips.map((flip, i) => (
-                                <span key={i} className="mx-8 flex items-center gap-2">
-                                    <Icon name="Zap" size={16} fill="black" /> {flip}
-                                </span>
-                            ))}
-                        </div>
-                        <div className="animate-marquee flex items-center" aria-hidden="true">
-                            {flips.map((flip, i) => (
-                                <span key={i} className="mx-8 flex items-center gap-2">
-                                    <Icon name="Zap" size={16} fill="black" /> {flip}
-                                </span>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            );
+        const initialTimer = setTimeout(triggerPopup, 3000);
+        const interval = setInterval(triggerPopup, 10000);
+        return () => {
+          clearTimeout(initialTimer);
+          clearInterval(interval);
         };
+      }, []);
 
-        const SocialProofPopup = () => {
-            const [visible, setVisible] = useState(false);
-            const [data, setData] = useState({ name: "", action: "", time: "" });
+      if (!visible) return null;
 
-            const notifications = [
-                { name: "Jake T.", action: "just bought The Blueprint", time: "2 mins ago" },
-                { name: "Mike R.", action: "joined the VIP Garage", time: "5 mins ago" },
-                { name: "Sarah L.", action: "flipped a JetSki for $1.5k", time: "12 mins ago" },
-                { name: "Tyler B.", action: "just bought The Blueprint", time: "Just now" },
-            ];
+      return (
+        <div className="fixed bottom-4 left-4 z-50 animate-bounce">
+          <div className="bg-neutral-900 border border-lime-500/50 p-3 rounded-lg shadow-[0_0_15px_rgba(57,255,20,0.2)] flex items-center gap-3 max-w-sm">
+            <div className="bg-lime-500/20 p-2 rounded-full text-lime-500">💸</div>
+            <div>
+              <p className="text-white text-sm font-bold">
+                {data.name} <span className="text-gray-400 font-normal">{data.action}</span>
+              </p>
+              <p className="text-lime-400 text-xs font-mono mt-1">{data.time}</p>
+            </div>
+          </div>
+        </div>
+      );
+    };
 
-            useEffect(() => {
-                const triggerPopup = () => {
-                    const randomNotif = notifications[Math.floor(Math.random() * notifications.length)];
-                    setData(randomNotif);
-                    setVisible(true);
-                    setTimeout(() => setVisible(false), 4000);
-                };
-                const initialTimer = setTimeout(triggerPopup, 3000);
-                const interval = setInterval(triggerPopup, 10000);
-                return () => { clearTimeout(initialTimer); clearInterval(interval); };
-            }, []);
+    function App() {
+      return (
+        <div className="bg-neutral-950 min-h-screen text-neutral-200 font-sans selection:bg-lime-500 selection:text-black overflow-x-hidden">
+          <SocialProofPopup />
 
-            if (!visible) return null;
-
-            return (
-                <div className="fixed bottom-4 left-4 z-50 animate-bounce">
-                    <div className="bg-neutral-900 border border-lime-500/50 p-3 rounded-lg shadow-[0_0_15px_rgba(57,255,20,0.2)] flex items-center gap-3 max-w-sm">
-                        <div className="bg-lime-500/20 p-2 rounded-full">
-                            <Icon name="DollarSign" className="text-lime-500" size={20} />
-                        </div>
-                        <div>
-                            <p className="text-white text-sm font-bold">{data.name} <span className="text-gray-400 font-normal">{data.action}</span></p>
-                            <p className="text-lime-400 text-xs font-mono mt-1">{data.time}</p>
-                        </div>
-                    </div>
+          <nav className="fixed w-full z-50 bg-neutral-950/80 backdrop-blur-md border-b border-white/5">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex justify-between items-center h-20">
+                <div className="flex items-center gap-2">
+                  <div className="w-10 h-10 bg-lime-500 rounded-lg flex items-center justify-center transform -skew-x-12 text-black font-black">
+                    T
+                  </div>
+                  <span className="font-black text-2xl tracking-tighter text-white uppercase">
+                    Throttle<span className="text-lime-500">Traders</span>
+                  </span>
                 </div>
-            );
-        };
-
-        function App() {
-            return (
-                <div className="bg-neutral-950 min-h-screen text-neutral-200 font-sans selection:bg-lime-500 selection:text-black overflow-x-hidden">
-                    <SocialProofPopup />
-                    
-                    {/* NAVBAR */}
-                    <nav className="fixed w-full z-50 bg-neutral-950/80 backdrop-blur-md border-b border-white/5">
-                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                            <div className="flex justify-between items-center h-20">
-                                <div className="flex items-center gap-2">
-                                    <div className="w-10 h-10 bg-lime-500 rounded-lg flex items-center justify-center transform -skew-x-12">
-                                        <Icon name="Wrench" className="text-black transform skew-x-12" size={24} />
-                                    </div>
-                                    <span className="font-black text-2xl tracking-tighter text-white uppercase">
-                                        Throttle<span className="text-lime-500">Traders</span>
-                                    </span>
-                                </div>
-                                <div className="hidden md:flex space-x-8">
-                                    <a href="#blueprint" className="text-sm font-bold uppercase tracking-wider hover:text-lime-400">The Blueprint</a>
-                                    <a href="#founder" className="text-sm font-bold uppercase tracking-wider hover:text-lime-400">The Boss</a>
-                                    <a href="#results" className="text-sm font-bold uppercase tracking-wider hover:text-lime-400">Results</a>
-                                </div>
-                                <a href="#pricing" className="bg-lime-500 hover:bg-lime-400 text-black px-6 py-2 rounded font-black uppercase text-sm tracking-wider transition-all transform hover:scale-105">
-                                    Start Flipping
-                                </a>
-                            </div>
-                        </div>
-                    </nav>
-
-                    {/* HERO */}
-                    <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-                        <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none"></div>
-                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-8 animate-float">
-                                <span className="flex h-2 w-2 rounded-full bg-lime-500 animate-pulse"></span>
-                                <span className="text-xs font-bold tracking-widest uppercase text-lime-400">Next Cohort Filling Fast</span>
-                            </div>
-                            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tighter leading-[0.9] mb-6">
-                                Turn Weekend Toys <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-lime-400 to-lime-600">
-                                    Into Cold Hard Cash.
-                                </span>
-                            </h1>
-                            <p className="mt-6 text-xl text-gray-400 max-w-2xl mx-auto font-medium mb-10">
-                                The unapologetic, step-by-step blueprint to buying, fixing, and flipping dirt bikes, ATVs, and jet skis for massive profit margins.
-                            </p>
-                            <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-                                <a href="#pricing" className="w-full sm:w-auto bg-lime-500 text-black px-8 py-4 rounded font-black uppercase tracking-wider text-lg animate-pulse-glow flex items-center justify-center gap-2 hover:bg-lime-400 transition-all group">
-                                    Get The Blueprint <Icon name="ArrowRight" className="group-hover:translate-x-1 transition-transform" size={20} />
-                                </a>
-                            </div>
-                        </div>
-                    </section>
-
-                    <TickerTape />
-
-                    {/* FOOTER */}
-                    <footer className="bg-black border-t border-white/5 py-12">
-                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-                            <div className="flex items-center gap-2">
-                                <Icon name="Wrench" className="text-lime-500" size={24} />
-                                <span className="font-black text-xl tracking-tighter text-white uppercase">Throttle Traders</span>
-                            </div>
-                            <p className="text-gray-600 text-sm">© 2026 Throttle Traders. All Rights Reserved.</p>
-                        </div>
-                    </footer>
+                <div className="hidden md:flex space-x-8">
+                  <a href="#blueprint" className="text-sm font-bold uppercase tracking-wider hover:text-lime-400">The Blueprint</a>
+                  <a href="#founder" className="text-sm font-bold uppercase tracking-wider hover:text-lime-400">The Boss</a>
+                  <a href="#results" className="text-sm font-bold uppercase tracking-wider hover:text-lime-400">Results</a>
                 </div>
-            );
-        }
+                <a href="#pricing" className="bg-lime-500 hover:bg-lime-400 text-black px-6 py-2 rounded font-black uppercase text-sm tracking-wider transition-all transform hover:scale-105">
+                  Start Flipping
+                </a>
+              </div>
+            </div>
+          </nav>
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
+          <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+            <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none"></div>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-8 animate-float">
+                <span className="flex h-2 w-2 rounded-full bg-lime-500 animate-pulse"></span>
+                <span className="text-xs font-bold tracking-widest uppercase text-lime-400">Next Cohort Filling Fast</span>
+              </div>
+
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tighter leading-[0.9] mb-6">
+                Turn Weekend Toys <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-lime-400 to-lime-600">
+                  Into Cold Hard Cash.
+                </span>
+              </h1>
+
+              <p className="mt-6 text-xl text-gray-400 max-w-2xl mx-auto font-medium mb-10">
+                The unapologetic, step-by-step blueprint to buying, fixing, and flipping dirt bikes, ATVs, and jet skis for massive profit margins.
+              </p>
+
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <a href="#pricing" className="w-full sm:w-auto bg-lime-500 text-black px-8 py-4 rounded font-black uppercase tracking-wider text-lg animate-pulse-glow hover:bg-lime-400 transition-all">
+                  Get The Blueprint →
+                </a>
+              </div>
+            </div>
+          </section>
+
+          <TickerTape />
+
+          <footer className="bg-black border-t border-white/5 py-12">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+              <div className="flex items-center gap-2">
+                <span className="text-lime-500 text-xl">⚙️</span>
+                <span className="font-black text-xl tracking-tighter text-white uppercase">Throttle Traders</span>
+              </div>
+              <p className="text-gray-600 text-sm">© 2026 Throttle Traders. All Rights Reserved.</p>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
 </body>
 </html>
